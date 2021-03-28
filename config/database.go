@@ -29,7 +29,7 @@ func SetupDbConnection() *gorm.DB {
 	}
 
 	//auto migration entity db
-	db.AutoMigrate(&entity.Blog{})
+	db.AutoMigrate(&entity.Blog{}, &entity.Comment{})
 
 	fmt.Println("Connection Database Success!")
 	return db
