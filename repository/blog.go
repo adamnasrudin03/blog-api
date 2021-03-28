@@ -39,7 +39,7 @@ func (r *blogRepository) Save(blog entity.Blog) (entity.Blog, error) {
 func (r *blogRepository) FindAll() ([]entity.Blog, error) {
 	var blogs []entity.Blog
 
-	err := r.db.Find(&blogs).Error
+	err := r.db.Preload("Comment").Find(&blogs).Error
 	if err != nil {
 		return blogs, err
 	}
@@ -51,7 +51,7 @@ func (r *blogRepository) FindAll() ([]entity.Blog, error) {
 func (r *blogRepository) FindByID(blogID uint64) (entity.Blog, error){
 	var blog entity.Blog
 
-	err := r.db.Where("id = ?", blogID).Find(&blog).Error
+	err := r.db.Preload("Comment").Where("id = ?", blogID).Find(&blog).Error
 	if err != nil {
 		return blog, err
 	}
