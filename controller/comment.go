@@ -14,6 +14,7 @@ import (
 type CommentController interface {
 	CreateComment(ctx *gin.Context)
 	UpdateComment(ctx *gin.Context)
+	DeleteByIDComment(ctx *gin.Context)
 }
 
 type commentController struct {
@@ -148,5 +149,57 @@ func (c *commentController) UpdateComment(ctx *gin.Context) {
 	}
 
 	response := helper.APIResponse("Success to updated comment", http.StatusOK, "success", updatedComment)
+	ctx.JSON(http.StatusOK, response)
+}
+
+//implement method CommentController, as a handler for the delete Comment method
+func (c *commentController) DeleteByIDComment(ctx *gin.Context) {
+	//check params id if int is not
+	id, err := strconv.ParseUint(ctx.Param("id"), 0, 0)
+	if err != nil {
+		response := helper.APIResponse("Param id not found / did not match", http.StatusBadRequest, "error", err.Error())
+		ctx.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	//proceed to the FindByIDBlog method in the package blogService
+	blog, err := c.blogService.FindByIDBlog(id)
+	if err != nil {
+		response := helper.APIResponse("Error to get blog", http.StatusBadRequest, "error", nil)
+		ctx.JSON(http.StatusBadRequest, response)
+		return
+	}
+	
+	//check the data returned
+	if (blog.ID == 0) {
+		response := helper.APIResponse("Blog not found", http.StatusNotFound, "error", nil)
+		ctx.JSON(http.StatusNotFound, response)
+		return
+	}
+
+	idComment, err := strconv.ParseUint(ctx.Param("idComment"), 0, 0)
+	if err != nil {
+		response := helper.APIResponse("Param idComment not found / did not match", http.StatusBadRequest, "error", err.Error())
+		ctx.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	//check data comment, proceed to the FindByIDcomment method in the package service
+	comment, _ := c.commentService.FindByIDComment(idComment)
+	if (comment.ID == 0) {
+		response := helper.APIResponse("comment not found", http.StatusNotFound, "error", nil)
+		ctx.JSON(http.StatusNotFound, response)
+		return
+	}
+
+	//proceed to the DeleteByIDComment method in the package service, which returns the data and error values
+	_, err = c.commentService.DeleteByIDComment(idComment)
+	if err != nil {
+		response := helper.APIResponse("Error to deleted comment", http.StatusBadRequest, "error", nil)
+		ctx.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := helper.APIResponse("Deleted comment", http.StatusOK, "success", nil)
 	ctx.JSON(http.StatusOK, response)
 }
