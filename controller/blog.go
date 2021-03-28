@@ -56,7 +56,9 @@ func (c *blogController) CreateBlog(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, response)
 }
 
+//implement method BlogController, as a handler for the List all blog method
 func (c *blogController) FindAllBlog(ctx *gin.Context) {
+	//proceed to the FindAllBlog method in the package service, which returns the data and error values
 	blogs, err := c.blogService.FindAllBlog()
 	if err != nil {
 		response := helper.APIResponse("Error to get blogs", http.StatusBadRequest, "error", nil)
@@ -68,7 +70,9 @@ func (c *blogController) FindAllBlog(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, response)
 }
 
+//implement method BlogController, as a handler for the Detail blog method
 func (c *blogController) FindByIDBlog(ctx *gin.Context) {
+	//check params id if int is not
 	id, err := strconv.ParseUint(ctx.Param("id"), 0, 0)
 	if err != nil {
 		response := helper.APIResponse("Param id not found / did not match", http.StatusBadRequest, "error", err.Error())
@@ -76,13 +80,14 @@ func (c *blogController) FindByIDBlog(ctx *gin.Context) {
 		return
 	}
 
+	//proceed to the FindByIDBlog method in the package service, which returns the data and error values
 	blog, err := c.blogService.FindByIDBlog(id)
 	if err != nil {
 		response := helper.APIResponse("Error to get blog", http.StatusBadRequest, "error", nil)
 		ctx.JSON(http.StatusBadRequest, response)
 		return
 	}
-
+	//check the data returned
 	if (blog == entity.Blog{}) {
 		response := helper.APIResponse("Blog not found", http.StatusNotFound, "error", nil)
 		ctx.JSON(http.StatusNotFound, response)
@@ -92,7 +97,9 @@ func (c *blogController) FindByIDBlog(ctx *gin.Context) {
 	}
 }
 
+//implement method BlogController, as a handler for the update blog method
 func (c *blogController) UpdateBlog(ctx *gin.Context) {
+	//check params id if int is not
 	id, err := strconv.ParseUint(ctx.Param("id"), 0, 0)
 	if err != nil {
 		response := helper.APIResponse("Param id not found / did not match", http.StatusBadRequest, "error", err.Error())
@@ -100,6 +107,7 @@ func (c *blogController) UpdateBlog(ctx *gin.Context) {
 		return
 	}
 
+	//check data blog, proceed to the FindByIDBlog method in the package service
 	blog, _ := c.blogService.FindByIDBlog(id)
 	if (blog == entity.Blog{}) {
 		response := helper.APIResponse("Blog not found", http.StatusNotFound, "error", nil)
@@ -118,6 +126,7 @@ func (c *blogController) UpdateBlog(ctx *gin.Context) {
 		input.Description = blog.Description
 	}
 
+	//Validation input user
 	err = ctx.ShouldBindJSON(&input)
 	if err != nil {
 		errors := helper.FormatValidationError(err)
@@ -128,18 +137,21 @@ func (c *blogController) UpdateBlog(ctx *gin.Context) {
 		return
 	}
 
-	updateBlog, err := c.blogService.UpdateBlog(id, input)
+	//proceed to the UpdateBlog method in the package service, which returns the data and error values
+	updatedBlog, err := c.blogService.UpdateBlog(id, input)
 	if err != nil {
 		response := helper.APIResponse("Failed to updated blog", http.StatusBadRequest, "error", nil)
 		ctx.JSON(http.StatusBadRequest, response)
 		return
 	}
 
-	response := helper.APIResponse("Success to updated blog", http.StatusOK, "success", updateBlog)
+	response := helper.APIResponse("Success to updated blog", http.StatusOK, "success", updatedBlog)
 	ctx.JSON(http.StatusOK, response)
 }
 
+//implement method BlogController, as a handler for the delete blog method
 func (c *blogController) DeleteByIDBlog(ctx *gin.Context) {
+	//check params id if int is not
 	id, err := strconv.ParseUint(ctx.Param("id"), 0, 0)
 	if err != nil {
 		response := helper.APIResponse("Param id not found / did not match", http.StatusBadRequest, "error", err.Error())
@@ -147,14 +159,16 @@ func (c *blogController) DeleteByIDBlog(ctx *gin.Context) {
 		return
 	}
 
-	Blog, _ := c.blogService.FindByIDBlog(id)
-	if (Blog == entity.Blog{}) {
+	//check data blog, proceed to the FindByIDBlog method in the package service
+	blog, _ := c.blogService.FindByIDBlog(id)
+	if (blog == entity.Blog{}) {
 		response := helper.APIResponse("Blog not found", http.StatusNotFound, "error", nil)
 		ctx.JSON(http.StatusNotFound, response)
 		return
 	}
 
-	Blog, err = c.blogService.DeleteByIDBlog(id)
+	//proceed to the DeleteByIDBlog method in the package service, which returns the data and error values
+	blog, err = c.blogService.DeleteByIDBlog(id)
 	if err != nil {
 		response := helper.APIResponse("Error to delete blog", http.StatusBadRequest, "error", nil)
 		ctx.JSON(http.StatusBadRequest, response)
