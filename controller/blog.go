@@ -74,7 +74,7 @@ func (c *blogController) FindByIDBlog(ctx *gin.Context) {
 	//check params id if int is not
 	id, err := strconv.ParseUint(ctx.Param("id"), 0, 0)
 	if err != nil {
-		response := helper.APIResponse("Param id not found / did not match", http.StatusBadRequest, "error", err.Error())
+		response := helper.APIResponse("Param id not found / did not match", http.StatusBadRequest, "error", nil)
 		ctx.JSON(http.StatusBadRequest, response)
 		return
 	}
@@ -102,7 +102,7 @@ func (c *blogController) UpdateBlog(ctx *gin.Context) {
 	//check params id if int is not
 	id, err := strconv.ParseUint(ctx.Param("id"), 0, 0)
 	if err != nil {
-		response := helper.APIResponse("Param id not found / did not match", http.StatusBadRequest, "error", err.Error())
+		response := helper.APIResponse("Param id not found / did not match", http.StatusBadRequest, "error", nil)
 		ctx.JSON(http.StatusBadRequest, response)
 		return
 	}
@@ -154,7 +154,7 @@ func (c *blogController) DeleteByIDBlog(ctx *gin.Context) {
 	//check params id if int is not
 	id, err := strconv.ParseUint(ctx.Param("id"), 0, 0)
 	if err != nil {
-		response := helper.APIResponse("Param id not found / did not match", http.StatusBadRequest, "error", err.Error())
+		response := helper.APIResponse("Param id not found / did not match", http.StatusBadRequest, "error", nil)
 		ctx.JSON(http.StatusBadRequest, response)
 		return
 	}

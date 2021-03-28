@@ -34,7 +34,7 @@ func (c *commentController) CreateComment(ctx *gin.Context) {
 	//check params id if int is not
 	id, err := strconv.ParseUint(ctx.Param("id"), 0, 0)
 	if err != nil {
-		response := helper.APIResponse("Param id not found / did not match", http.StatusBadRequest, "error", err.Error())
+		response := helper.APIResponse("Param id not found / did not match", http.StatusBadRequest, "error", nil)
 		ctx.JSON(http.StatusBadRequest, response)
 		return
 	}
@@ -84,7 +84,7 @@ func (c *commentController) UpdateComment(ctx *gin.Context) {
 	//check params id if int is not
 	id, err := strconv.ParseUint(ctx.Param("id"), 0, 0)
 	if err != nil {
-		response := helper.APIResponse("Param id not found / did not match", http.StatusBadRequest, "error", err.Error())
+		response := helper.APIResponse("Param id not found / did not match", http.StatusBadRequest, "error", nil)
 		ctx.JSON(http.StatusBadRequest, response)
 		return
 	}
@@ -106,7 +106,7 @@ func (c *commentController) UpdateComment(ctx *gin.Context) {
 
 	idComment, err := strconv.ParseUint(ctx.Param("idComment"), 0, 0)
 	if err != nil {
-		response := helper.APIResponse("Param idComment not found / did not match", http.StatusBadRequest, "error", err.Error())
+		response := helper.APIResponse("Param idComment not found / did not match", http.StatusBadRequest, "error", nil)
 		ctx.JSON(http.StatusBadRequest, response)
 		return
 	}
@@ -157,7 +157,7 @@ func (c *commentController) DeleteByIDComment(ctx *gin.Context) {
 	//check params id if int is not
 	id, err := strconv.ParseUint(ctx.Param("id"), 0, 0)
 	if err != nil {
-		response := helper.APIResponse("Param id not found / did not match", http.StatusBadRequest, "error", err.Error())
+		response := helper.APIResponse("Param id not found / did not match", http.StatusBadRequest, "error", nil)
 		ctx.JSON(http.StatusBadRequest, response)
 		return
 	}
@@ -179,7 +179,7 @@ func (c *commentController) DeleteByIDComment(ctx *gin.Context) {
 
 	idComment, err := strconv.ParseUint(ctx.Param("idComment"), 0, 0)
 	if err != nil {
-		response := helper.APIResponse("Param idComment not found / did not match", http.StatusBadRequest, "error", err.Error())
+		response := helper.APIResponse("Param idComment not found / did not match", http.StatusBadRequest, "error", nil)
 		ctx.JSON(http.StatusBadRequest, response)
 		return
 	}
