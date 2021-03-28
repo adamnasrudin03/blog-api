@@ -2,6 +2,9 @@ package main
 
 import (
 	"blog-api/config"
+	"blog-api/controller"
+	"blog-api/repository"
+	"blog-api/service"
 	"net/http"
 
 	"github.com/gin-contrib/cors"
@@ -11,6 +14,12 @@ import (
 
 var (
 	db             		*gorm.DB                 		= config.SetupDbConnection()
+
+	blogRepository		repository.BlogRepository		= repository.NewBlogRepository(db)
+
+	blogService			service.BlogService				= service.NewBlogService(blogRepository)
+
+	blogController		controller.BlogController		= controller.NewBlogController(blogService)
 
 )
 
@@ -27,6 +36,12 @@ func main() {
 			"message": "Welcome my application",
 		})
 	})
+
+	//Grouping router
+	api := router.Group("/api/v1")
+
+	//Endpoint blogs
+	api.POST("/blogs", blogController.CreateBlog)
 
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{
