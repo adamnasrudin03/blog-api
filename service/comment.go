@@ -11,6 +11,7 @@ type CommentService interface {
 	CreateComment(input dto.CreateComment) (entity.Comment, error)
 	UpdateComment(commentID uint64, input dto.CreateComment) (entity.Comment, error)
 	FindByIDComment(commentID uint64) (entity.Comment, error)
+	DeleteByIDComment(commentID uint64) (entity.Comment, error)
 }
 
 type commentService struct {
@@ -69,4 +70,14 @@ func (s *commentService) UpdateComment(commentID uint64, input dto.CreateComment
 	}
 
 	return newComment, nil
+}
+
+//implement method CommentService, func to delete data by ID / proceed to repository (DeleteByID)
+func (s *commentService) DeleteByIDComment(commentID uint64) (entity.Comment, error) {
+	comment, err := s.commentRepository.DeleteByID(commentID)
+	if err != nil {
+		return comment, err
+	}
+	
+	return comment, nil
 }
