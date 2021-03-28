@@ -23,10 +23,11 @@ func NewBlogController(blogService service.BlogService) *blogController {
 	return &blogController{blogService}
 }
 
-
+//implement method BlogController, as a handler for the create blog method
 func (c *blogController) CreateBlog(ctx *gin.Context) {
 	var input dto.CreateBlog
 
+	//Validation input user
 	err := ctx.ShouldBindJSON(&input)
 	if err != nil {
 		errors := helper.FormatValidationError(err)
@@ -37,6 +38,7 @@ func (c *blogController) CreateBlog(ctx *gin.Context) {
 		return
 	}
 
+	//proceed to the CreateBlog method in the package service, which returns the data and error values
 	newBlog, err := c.blogService.CreateBlog(input)
 	if err != nil {
 		response := helper.APIResponse("Failed to create blog", http.StatusBadRequest, "error", nil)
