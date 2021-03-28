@@ -3,19 +3,19 @@ package service
 import (
 	"blog-api/dto"
 	"blog-api/entity"
-
-	"gorm.io/gorm"
+	"blog-api/repository"
 )
 
 
 type BlogService interface {
-	Save(input dto.CreateBlog) (entity.Blog, error)
+	CreateBlog(input dto.CreateBlog) (entity.Blog, error)
 }
 
 type blogService struct {
-	db *gorm.DB
+	repository repository.BlogRepository
 }
 
-func NewBlogService(db *gorm.DB) *blogService {
-	return &blogService{db}
+func NewBlogService(repository repository.BlogRepository) *blogService {
+	return &blogService{repository}
 }
+
