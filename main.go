@@ -42,6 +42,10 @@ func main() {
 
 	//Endpoint blogs
 	api.POST("/blogs", blogController.CreateBlog)
+	api.GET("/blogs", blogController.FindAllBlog)
+	api.GET("/blogs/:id", blogController.FindByIDBlog)
+	api.PUT("/blogs/:id/update", blogController.UpdateBlog)
+	api.DELETE("/blogs/:id/delete", blogController.DeleteByIDBlog)
 
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{
