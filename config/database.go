@@ -1,6 +1,7 @@
 package config
 
 import (
+	"blog-api/entity"
 	"fmt"
 	"os"
 
@@ -27,8 +28,8 @@ func SetupDbConnection() *gorm.DB {
 		panic("Failed to create a connection to database")
 	}
 
-	//automigration entity
-	//db.AutoMigrate()
+	//auto migration entity db
+	db.AutoMigrate(&entity.Blog{})
 
 	fmt.Println("Connection Database Success!")
 	return db
