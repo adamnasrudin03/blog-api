@@ -2,7 +2,6 @@ package controller
 
 import (
 	"blog-api/dto"
-	"blog-api/entity"
 	"blog-api/helper"
 	"blog-api/service"
 	"net/http"
@@ -87,8 +86,9 @@ func (c *blogController) FindByIDBlog(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, response)
 		return
 	}
+	
 	//check the data returned
-	if (blog == entity.Blog{}) {
+	if (blog.ID == 0) {
 		response := helper.APIResponse("Blog not found", http.StatusNotFound, "error", nil)
 		ctx.JSON(http.StatusNotFound, response)
 	} else {
@@ -109,7 +109,7 @@ func (c *blogController) UpdateBlog(ctx *gin.Context) {
 
 	//check data blog, proceed to the FindByIDBlog method in the package service
 	blog, _ := c.blogService.FindByIDBlog(id)
-	if (blog == entity.Blog{}) {
+	if (blog.ID == 0) {
 		response := helper.APIResponse("Blog not found", http.StatusNotFound, "error", nil)
 		ctx.JSON(http.StatusNotFound, response)
 		return
@@ -161,7 +161,7 @@ func (c *blogController) DeleteByIDBlog(ctx *gin.Context) {
 
 	//check data blog, proceed to the FindByIDBlog method in the package service
 	blog, _ := c.blogService.FindByIDBlog(id)
-	if (blog == entity.Blog{}) {
+	if (blog.ID == 0) {
 		response := helper.APIResponse("Blog not found", http.StatusNotFound, "error", nil)
 		ctx.JSON(http.StatusNotFound, response)
 		return
