@@ -16,11 +16,13 @@ var (
 	db             		*gorm.DB                 		= config.SetupDbConnection()
 
 	blogRepository		repository.BlogRepository		= repository.NewBlogRepository(db)
+	commentRepository	repository.CommentRepository	= repository.NewCommentRepository(db)
 
 	blogService			service.BlogService				= service.NewBlogService(blogRepository)
+	commentService		service.CommentService			= service.NewCommentService(commentRepository)
 
 	blogController		controller.BlogController		= controller.NewBlogController(blogService)
-
+	commentController	controller.CommentController	= controller.NewCommentController(commentService, blogService)
 )
 
 func main() {
@@ -46,6 +48,9 @@ func main() {
 	api.GET("/blogs/:id", blogController.FindByIDBlog)
 	api.PUT("/blogs/:id/update", blogController.UpdateBlog)
 	api.DELETE("/blogs/:id/delete", blogController.DeleteByIDBlog)
+
+	//Endpoint comment
+	api.POST("/blogs/:id/comment", commentController.CreateComment)
 
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{
