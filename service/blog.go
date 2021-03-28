@@ -19,3 +19,18 @@ func NewBlogService(repository repository.BlogRepository) *blogService {
 	return &blogService{repository}
 }
 
+func (s *blogService) CreateBlog(input dto.CreateBlog) (entity.Blog, error) {
+	blog := entity.Blog{}
+
+	blog.Author = input.Author
+	blog.Title = input.Title
+	blog.Description = input.Description
+
+	newBlog, err := s.repository.Save(blog)
+	if err != nil {
+		return newBlog, err
+	}
+
+	return newBlog, nil
+
+}
