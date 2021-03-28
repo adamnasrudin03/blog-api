@@ -105,7 +105,7 @@ func (c *commentController) UpdateComment(ctx *gin.Context) {
 
 	idComment, err := strconv.ParseUint(ctx.Param("idComment"), 0, 0)
 	if err != nil {
-		response := helper.APIResponse("Param id not found / did not match", http.StatusBadRequest, "error", err.Error())
+		response := helper.APIResponse("Param idComment not found / did not match", http.StatusBadRequest, "error", err.Error())
 		ctx.JSON(http.StatusBadRequest, response)
 		return
 	}
