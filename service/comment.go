@@ -10,6 +10,7 @@ import (
 type CommentService interface {
 	CreateComment(input dto.CreateComment) (entity.Comment, error)
 	UpdateComment(commentID uint64, input dto.CreateComment) (entity.Comment, error)
+	FindByIDComment(commentID uint64) (entity.Comment, error)
 }
 
 type commentService struct {
@@ -37,6 +38,16 @@ func (s *commentService) CreateComment(input dto.CreateComment) (entity.Comment,
 
 	return newComment, nil
 
+}
+
+//implement method CommentService, func to checks with the FindById method in the package repository
+func (s *commentService) FindByIDComment(commentID uint64) (entity.Comment, error) {
+	comment, err := s.commentRepository.FindByID(commentID)
+	if err != nil {
+		return comment, err
+	}
+	
+	return comment, nil
 }
 
 //implement method CommentService, func to take input from the user then update it / continue to the repository (update)
