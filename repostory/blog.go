@@ -20,3 +20,12 @@ type blogRepository struct {
 func NewBlogRepository(db *gorm.DB) *blogRepository {
 	return &blogRepository{db}
 }
+
+func (r *blogRepository) Save(blog entity.Blog) (entity.Blog, error) {
+	err := r.db.Create(&blog).Error
+	if err != nil {
+		return blog, err
+	}
+
+	return blog, nil
+}
