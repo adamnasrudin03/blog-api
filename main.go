@@ -52,6 +52,7 @@ func main() {
 	//Endpoint comment
 	api.POST("/blogs/:id/comment", commentController.CreateComment)
 	api.PUT("/blogs/:id/comment/:idComment/update", commentController.UpdateComment)
+	api.DELETE("/blogs/:id/comment/:idComment/delete", commentController.DeleteByIDComment)
 
 	router.NoRoute(func(c *gin.Context) {
 		c.JSON(http.StatusNotFound, gin.H{
