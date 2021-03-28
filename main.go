@@ -1,13 +1,21 @@
 package main
 
 import (
+	"blog-api/config"
 	"net/http"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
+)
+
+var (
+	db             		*gorm.DB                 		= config.SetupDbConnection()
+
 )
 
 func main() {
+	defer config.CloseDbConnection(db)
 
 	router := gin.Default()
 
