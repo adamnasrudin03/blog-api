@@ -4,6 +4,7 @@ import (
 	"blog-api/dto"
 	"blog-api/entity"
 	"blog-api/repository"
+	"errors"
 )
 
 //CommentService is a declaration contract
@@ -57,6 +58,11 @@ func (s *commentService) UpdateComment(commentID uint64, input dto.CreateComment
 	comment, err := s.commentRepository.FindByID(commentID)
 	if err != nil {
 		return comment, err
+	}
+
+	//check if the blogID is appropriate
+	if comment.BlogID != input.BlogID {
+		return comment, errors.New("not the blog comment")
 	}
 
 	comment.Author = input.Author
