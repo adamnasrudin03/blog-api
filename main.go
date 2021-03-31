@@ -3,6 +3,7 @@ package main
 import (
 	"blog-api/config"
 	"blog-api/controller"
+	"blog-api/helper"
 	"blog-api/repository"
 	"blog-api/service"
 	"net/http"
@@ -13,16 +14,16 @@ import (
 )
 
 var (
-	db             		*gorm.DB                 		= config.SetupDbConnection()
+	db *gorm.DB = config.SetupDbConnection()
 
-	blogRepository		repository.BlogRepository		= repository.NewBlogRepository(db)
-	commentRepository	repository.CommentRepository	= repository.NewCommentRepository(db)
+	blogRepository    repository.BlogRepository    = repository.NewBlogRepository(db)
+	commentRepository repository.CommentRepository = repository.NewCommentRepository(db)
 
-	blogService			service.BlogService				= service.NewBlogService(blogRepository)
-	commentService		service.CommentService			= service.NewCommentService(commentRepository)
+	blogService    service.BlogService    = service.NewBlogService(blogRepository)
+	commentService service.CommentService = service.NewCommentService(commentRepository)
 
-	blogController		controller.BlogController		= controller.NewBlogController(blogService)
-	commentController	controller.CommentController	= controller.NewCommentController(commentService, blogService)
+	blogController    controller.BlogController    = controller.NewBlogController(blogService)
+	commentController controller.CommentController = controller.NewCommentController(commentService, blogService)
 )
 
 func main() {
@@ -33,10 +34,8 @@ func main() {
 	router.Use(cors.Default())
 
 	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"status":  "success",
-			"message": "Welcome my application",
-		})
+		response := helper.APIResponse("Welcome my application", http.StatusOK, "success", nil)
+		c.JSON(http.StatusOK, response)
 	})
 
 	//Grouping router
@@ -55,11 +54,8 @@ func main() {
 	api.DELETE("/blogs/:id/comment/:idComment/delete", commentController.DeleteByIDComment)
 
 	router.NoRoute(func(c *gin.Context) {
-		c.JSON(http.StatusNotFound, gin.H{
-			"message": "Page not found",
-			"code":    http.StatusNotFound,
-			"status":  "error",
-		})
+		response := helper.APIResponse("Page not found", http.StatusNotFound, "error", nil)
+		c.JSON(http.StatusNotFound, response)
 	})
 
 	router.Run()
